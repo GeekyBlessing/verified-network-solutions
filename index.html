@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VNS — Verified Network Solutions</title>
+<meta name="description" content="Advanced GPS vehicle tracking, dash cam installation, and vehicle security solutions across Nigeria. Track. Protect. Drive With Confidence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --o:#FF4D00;--o2:#D63207;--o3:rgba(255,77,0,.13);--o4:rgba(255,77,0,.06);
+  --ink:#050505;--s1:#0d0d0d;--s2:#131313;--s3:#1a1a1a;
+  --w:#fff;--mu:#6a6a6a;--mu2:#3a3a3a;
+  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.11);
+  --mono:'Space Mono',monospace;--sans:'Work Sans',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);--ease2:cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--w);font-family:var(--sans);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--o)}
+::selection{background:var(--o);color:#fff}
+
+/* ─── NAV ─── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:0 3.5rem;height:68px;transition:background .4s var(--ease),border-color .4s;border-bottom:1px solid transparent}
+#nav.scrolled{background:rgba(5,5,5,.94);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-color:var(--bd)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-lm{width:38px;height:38px;border:1.5px solid var(--o);display:flex;align-items:center;justify-content:center;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+.nav-lm svg{width:24px;height:15px}
+.nav-wm{display:flex;flex-direction:column;line-height:1.1}
+.nav-wm b{font-size:.82rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.nav-wm small{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mu)}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);text-decoration:none;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--o);transform:scaleX(0);transition:transform .25s var(--ease);transform-origin:left}
+.nav-links a:hover{color:#fff}.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{display:flex;align-items:center;gap:7px;font-family:var(--sans);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--o);border:none;padding:.65rem 1.4rem;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;text-decoration:none}
+.nav-cta:hover{background:var(--o2)}
+.nav-cta svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ─── HERO ─── */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3.5rem 5rem;overflow:hidden}
+
+/* Hero animated GPS dashboard background */
+#hero-bg{position:absolute;inset:0;z-index:0}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* Real photo overlay - using unsplash API pattern with a dark car/city image */
+.hero-photo{position:absolute;inset:0;z-index:1}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:.28;filter:saturate(0.4) contrast(1.1)}
+.hero-photo::after{content:'';position:absolute;inset:0;background:
+  linear-gradient(to right, rgba(5,5,5,.7) 0%, rgba(5,5,5,.2) 60%, rgba(5,5,5,.5) 100%),
+  linear-gradient(to bottom, rgba(5,5,5,.3) 0%, rgba(5,5,5,.0) 40%, rgba(5,5,5,.95) 100%)}
+
+/* Floating HUD elements */
+.hero-hud{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hud-card{position:absolute;background:rgba(5,5,5,.82);border:1px solid var(--bd2);backdrop-filter:blur(12px);padding:1rem 1.2rem;min-width:180px}
+.hud-card.hud-tl{top:22%;left:3.5rem;animation:hud-float 4s ease-in-out infinite}
+.hud-card.hud-tr{top:28%;right:4rem;animation:hud-float 4s 1.5s ease-in-out infinite}
+.hud-card.hud-br{bottom:32%;right:4rem;animation:hud-float 4s 2.5s ease-in-out infinite}
+@keyframes hud-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hud-label{font-family:var(--mono);font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--o);margin-bottom:.5rem}
+.hud-val{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:#fff;line-height:1}
+.hud-sub{font-size:.64rem;color:var(--mu);margin-top:3px}
+.hud-live{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--o);margin-bottom:.5rem}
+.hud-live-dot{width:5px;height:5px;border-radius:50%;background:var(--o);animation:ping 1.8s ease-out infinite}
+.hud-row{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.hud-metric{text-align:center}
+.hud-metric-val{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--o)}
+.hud-metric-lbl{font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:2px}
+.hud-bar-wrap{margin-top:.6rem;height:2px;background:var(--bd2);position:relative;overflow:hidden}
+.hud-bar{height:100%;background:var(--o);animation:hud-bar-pulse 3s ease-in-out infinite}
+@keyframes hud-bar-pulse{0%,100%{width:65%}50%{width:82%}}
+.hud-ping-wrap{display:flex;align-items:center;gap:5px;margin-top:.5rem}
+.hud-ping-label{font-size:.6rem;color:var(--mu)}
+
+.hero-content{position:relative;z-index:3}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:2rem;opacity:0;transform:translateY(10px);animation:fup .8s .15s var(--ease) forwards}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--o);animation:ping 2s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,77,0,.7)}70%{box-shadow:0 0 0 9px rgba(255,77,0,0)}100%{box-shadow:0 0 0 0 rgba(255,77,0,0)}}
+.hero-h1{font-size:clamp(3rem,7.5vw,7.2rem);font-weight:900;line-height:.92;letter-spacing:-.03em;text-transform:uppercase;max-width:960px;margin-bottom:2.5rem;opacity:0;transform:translateY(18px);animation:fup .9s .28s var(--ease) forwards}
+.hero-h1 em{font-style:normal;color:var(--o)}
+.hero-h1 .ghost{-webkit-text-stroke:1.5px rgba(255,255,255,.18);color:transparent}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.hero-sub{font-size:.92rem;color:var(--mu);line-height:1.8;max-width:380px;opacity:0;transform:translateY(14px);animation:fup .8s .42s var(--ease) forwards}
+.hero-acts{display:flex;gap:1rem;align-items:center;opacity:0;transform:translateY(14px);animation:fup .8s .52s var(--ease) forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .22s;border:none;padding:.95rem 2rem}
+.btn-fill{background:var(--o);color:#fff;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%)}
+.btn-fill:hover{background:var(--o2);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:#fff;border:1px solid var(--bd2)}
+.btn-outline:hover{border-color:var(--o);color:var(--o)}
+.btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.hero-stats{display:flex;gap:3.5rem;padding-top:3rem;margin-top:3.5rem;border-top:1px solid var(--bd);opacity:0;transform:translateY(12px);animation:fup .8s .68s var(--ease) forwards}
+.stat-n{font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--o);line-height:1;letter-spacing:-.02em}
+.stat-l{font-size:.6rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:4px}
+@keyframes fup{to{opacity:1;transform:none}}
+
+/* ─── TICKER ─── */
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--s1);padding:.85rem 0;white-space:nowrap}
+.ticker-inner{display:inline-flex;animation:tick 32s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{display:inline-flex;align-items:center;gap:1rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);padding:0 2rem}
+.ticker-dot{width:4px;height:4px;border-radius:50%;background:var(--o);display:inline-block}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── SECTION BASE ─── */
+.section{padding:8rem 3.5rem}
+.s-eye{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.59rem;letter-spacing:.22em;text-transform:uppercase;color:var(--o);margin-bottom:.9rem}
+.s-eye::before{content:'';display:block;width:22px;height:1px;background:var(--o)}
+.s-title{font-size:clamp(1.9rem,4vw,3.6rem);font-weight:900;text-transform:uppercase;letter-spacing:-.025em;line-height:.94;margin-bottom:1.1rem}
+.s-title em{font-style:normal;color:var(--o)}
+.s-body{color:var(--mu);font-size:.9rem;line-height:1.8;max-width:500px;margin-bottom:4.5rem}
+
+/* ─── SCROLL REVEAL ─── */
+.sr{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.sr.in{opacity:1;transform:none}
+.sr-d1{transition-delay:.08s}.sr-d2{transition-delay:.16s}.sr-d3{transition-delay:.24s}.sr-d4{transition-delay:.32s}
+
+/* ─── PHOTO GALLERY strip ─── */
+#photos{background:var(--ink);padding:0;overflow:hidden;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.photo-strip{display:flex;gap:0;height:320px}
+.photo-cell{flex:1;position:relative;overflow:hidden;cursor:pointer}
+.photo-cell img{width:100%;height:100%;object-fit:cover;filter:saturate(.35) brightness(.7);transition:filter .5s var(--ease),transform .5s var(--ease)}
+.photo-cell:hover img{filter:saturate(.7) brightness(.85);transform:scale(1.04)}
+.photo-cell-label{position:absolute;bottom:0;left:0;right:0;padding:.9rem 1.1rem;background:linear-gradient(to top,rgba(5,5,5,.9),transparent);font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .3s;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.photo-cell:hover .photo-cell-label{opacity:1;transform:none}
+.photo-cell-num{position:absolute;top:.9rem;left:.9rem;font-family:var(--mono);font-size:.54rem;letter-spacing:.16em;color:var(--o);background:rgba(5,5,5,.7);padding:.25rem .55rem;border:1px solid rgba(255,77,0,.25)}
+
+/* ─── SERVICES ─── */
+#services{background:var(--ink)}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--bd)}
+.svc{padding:2.4rem 1.8rem;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);position:relative;overflow:hidden;cursor:default;transition:background .3s}
+.svc:nth-child(4n){border-right:none}
+.svc:nth-last-child(-n+4){border-bottom:none}
+.svc-glow{position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,77,0,.08),transparent 70%);opacity:0;transition:opacity .4s}
+.svc:hover .svc-glow{opacity:1}
+.svc:hover{background:#0f0f0f}
+.svc-icon{width:42px;height:42px;background:var(--o4);border:1px solid rgba(255,77,0,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;transition:background .3s,border-color .3s}
+.svc:hover .svc-icon{background:rgba(255,77,0,.16);border-color:rgba(255,77,0,.35)}
+.svc-icon svg{width:18px;height:18px;stroke:var(--o);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.svc-bar{width:24px;height:2px;background:var(--o);margin-bottom:1.2rem;transition:width .35s var(--ease)}
+.svc:hover .svc-bar{width:44px}
+.svc-n{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.svc-d{font-size:.76rem;color:var(--mu);line-height:1.65}
+.svc-arrow{position:absolute;bottom:1.8rem;right:1.8rem;width:26px;height:26px;border:1px solid rgba(255,77,0,.2);display:flex;align-items:center;justify-content:center;opacity:0;transform:translate(4px,4px);transition:opacity .3s,transform .3s}
+.svc:hover .svc-arrow{opacity:1;transform:none}
+.svc-arrow svg{width:11px;height:11px;stroke:var(--o);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ─── PRODUCTS ─── */
+#products{background:#080808}
+.prd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.pc{background:var(--s2);border:1px solid var(--bd);overflow:hidden;display:flex;flex-direction:column;transition:border-color .3s,transform .35s var(--ease)}
+.pc:hover{border-color:rgba(255,77,0,.3);transform:translateY(-6px)}
+.pc.feat{border-color:rgba(255,77,0,.38)}
+.pc-head{padding:2rem 2rem 1.6rem;border-bottom:1px solid var(--bd);position:relative;overflow:hidden}
+.pc.feat .pc-head{background:linear-gradient(135deg,rgba(255,77,0,.09),transparent 60%)}
+.pc-badge{display:inline-block;background:var(--o);color:#fff;font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:.28rem .85rem;margin-bottom:.9rem;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)}
+.pc-cat{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:.4rem}
+.pc-name{font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.02em;margin-bottom:.4rem}
+.pc-desc{font-size:.77rem;color:var(--mu);line-height:1.65}
+.pc-body{padding:1.6rem 2rem;flex:1;display:flex;flex-direction:column}
+.pc-feats{list-style:none;margin-bottom:1.6rem;flex:1}
+.pc-feats li{display:flex;align-items:flex-start;gap:8px;font-size:.77rem;color:var(--mu);padding:.5rem 0;border-bottom:1px solid var(--bd);line-height:1.4}
+.pc-feats li:last-child{border-bottom:none}
+.pc-feats li::before{content:'';width:5px;height:5px;min-width:5px;border-radius:50%;background:var(--o);margin-top:5px}
+.ptbl{width:100%;border-collapse:collapse}
+.ptbl tr{border-top:1px solid var(--bd)}
+.ptbl td{padding:.6rem 0;font-size:.76rem}
+.ptbl td:first-child{color:var(--mu)}
+.ptbl td:last-child{text-align:right;font-family:var(--mono);font-weight:700;font-size:.77rem}
+.pc-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:transparent;color:var(--o);border:1px solid rgba(255,77,0,.3);font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.9rem;cursor:pointer;text-decoration:none;margin-top:1.5rem;transition:background .2s,color .2s}
+.pc-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.pc-cta:hover,.pc.feat .pc-cta{background:var(--o);color:#fff}
+.pc.feat .pc-cta:hover{background:var(--o2)}
+
+/* ─── STORY / ABOUT ─── */
+#story{background:var(--ink);overflow:hidden}
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:520px}
+.story-visual{position:relative;overflow:hidden}
+.story-visual img{width:100%;height:100%;object-fit:cover;filter:saturate(.45) brightness(.65);transition:filter .6s}
+.story-visual:hover img{filter:saturate(.6) brightness(.75)}
+.story-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--ink) 100%)}
+.story-visual-badge{position:absolute;bottom:2.5rem;left:2.5rem;background:rgba(5,5,5,.88);border:1px solid var(--bd2);border-left:3px solid var(--o);backdrop-filter:blur(8px);padding:1rem 1.4rem}
+.story-visual-badge-year{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--o);line-height:1}
+.story-visual-badge-text{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+.story-content{padding:5rem 4.5rem;display:flex;flex-direction:column;justify-content:center}
+.story-quote{font-size:1.05rem;font-weight:300;font-style:italic;color:rgba(255,255,255,.75);line-height:1.75;margin-bottom:2rem;position:relative;padding-left:1.8rem}
+.story-quote::before{content:'';position:absolute;left:0;top:.2rem;bottom:.2rem;width:2px;background:var(--o)}
+.story-body{font-size:.84rem;color:var(--mu);line-height:1.8;margin-bottom:2.5rem}
+.story-milestones{display:flex;flex-direction:column;gap:0}
+.milestone{display:flex;gap:1.5rem;padding:1rem 0;border-bottom:1px solid var(--bd)}
+.milestone:last-child{border-bottom:none}
+.milestone-year{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--o);min-width:48px;padding-top:2px}
+.milestone-text{font-size:.78rem;color:var(--mu);line-height:1.55}
+.milestone-text strong{color:#fff;display:block;font-size:.8rem;margin-bottom:2px}
+
+/* ─── DASHBOARD MOCKUP ─── */
+#dash{background:#060606;border-top:1px solid var(--bd)}
+.dash-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.dash-screen{background:#0a0a0a;border:1px solid var(--bd2);overflow:hidden;box-shadow:0 0 80px rgba(255,77,0,.06)}
+.dash-topbar{background:#111;border-bottom:1px solid var(--bd);padding:.75rem 1rem;display:flex;align-items:center;gap:8px}
+.dash-dots{display:flex;gap:5px}
+.dash-dot-btn{width:9px;height:9px;border-radius:50%}
+.dash-dot-btn:nth-child(1){background:#ff5f57}.dash-dot-btn:nth-child(2){background:#febc2e}.dash-dot-btn:nth-child(3){background:#28c840}
+.dash-url{flex:1;background:#1a1a1a;border-radius:3px;padding:.25rem .7rem;font-family:var(--mono);font-size:.56rem;color:var(--mu);margin-left:.5rem}
+.dash-body{padding:1.2rem}
+.dash-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.1rem}
+.dash-kpi{background:#111;border:1px solid var(--bd);padding:.75rem .65rem}
+.dash-kpi-val{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--o);line-height:1}
+.dash-kpi-lbl{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:4px}
+.dash-map-area{background:#0d0d0d;border:1px solid var(--bd);height:170px;position:relative;overflow:hidden;margin-bottom:1.1rem}
+#dash-mini-canvas{width:100%;height:100%;display:block}
+.dash-list{display:flex;flex-direction:column;gap:.45rem}
+.dash-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:.75rem;align-items:center;background:#111;border:1px solid var(--bd);padding:.55rem .8rem}
+.dash-rdot{width:7px;height:7px;border-radius:50%}
+.dash-rdot.on{background:var(--o);animation:ping 2s ease-out infinite}
+.dash-rdot.off{background:#2a2a2a}
+.dash-rdot.warn{background:#febc2e;animation:ping 1.5s ease-out infinite}
+.dash-rname{font-size:.7rem;font-weight:600}
+.dash-rspeed{font-family:var(--mono);font-size:.62rem;color:var(--mu)}
+.dash-rloc{font-size:.62rem;color:var(--mu);text-align:right}
+
+/* ─── LIVE MAP SECTION ─── */
+#livemap{position:relative;height:500px;overflow:hidden;background:var(--s1);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+#map-canvas{position:absolute;inset:0;width:100%;height:100%}
+.map-overlay{position:absolute;inset:0;z-index:2;display:flex;align-items:stretch;justify-content:space-between}
+.map-left-panel{background:rgba(5,5,5,.85);border-right:1px solid var(--bd2);backdrop-filter:blur(14px);padding:2rem 1.8rem;width:260px;display:flex;flex-direction:column;gap:.3rem}
+.mp-title{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.mp-live-dot{width:5px;height:5px;border-radius:50%;background:var(--o);animation:ping 1.8s ease-out infinite}
+.mp-vehicle{display:flex;align-items:center;gap:9px;padding:.6rem 0;border-bottom:1px solid var(--bd)}
+.mp-vehicle:last-of-type{border-bottom:none}
+.mp-vdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.mp-vdot.active{background:var(--o);animation:ping 2.5s ease-out infinite}
+.mp-vdot.idle{background:#2a2a2a}
+.mp-vdot.alert{background:#ff3b30;animation:ping 1s ease-out infinite}
+.mp-vname{font-size:.76rem;font-weight:600;flex:1}
+.mp-vspeed{font-family:var(--mono);font-size:.62rem;color:var(--mu)}
+.mp-kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:1rem}
+.mp-kpi{background:var(--s2);padding:.65rem;text-align:center;border:1px solid var(--bd)}
+.mp-kpi-val{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--o)}
+.mp-kpi-lbl{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+.mp-alert{display:flex;align-items:center;gap:6px;margin-top:1rem;background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.25);padding:.55rem .8rem;font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:#ff3b30}
+.mp-alert-dot{width:5px;height:5px;border-radius:50%;background:#ff3b30;animation:ping 1s ease-out infinite;flex-shrink:0}
+.map-right-info{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:2rem;gap:1rem;pointer-events:none}
+.map-tag{background:rgba(5,5,5,.8);border:1px solid var(--bd2);backdrop-filter:blur(10px);padding:.7rem 1rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);text-align:right}
+.map-tag span{display:block;color:var(--o);font-size:.72rem;margin-top:2px}
+
+/* ─── COVERAGE MAP ─── */
+#coverage{background:#080808}
+.coverage-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:5rem;align-items:start}
+.coverage-map-wrap{position:relative}
+#cov-canvas{width:100%;border:1px solid var(--bd);background:#0a0a0a}
+.cov-legend{display:flex;gap:1.5rem;margin-top:1rem}
+.cov-leg-item{display:flex;align-items:center;gap:6px;font-size:.68rem;color:var(--mu)}
+.cov-leg-dot{width:8px;height:8px;border-radius:50%}
+.cov-cities-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem;margin-top:1rem}
+.cov-city{background:var(--s2);border:1px solid var(--bd);padding:.85rem 1rem;display:flex;align-items:center;gap:.75rem;transition:border-color .25s}
+.cov-city:hover{border-color:rgba(255,77,0,.3)}
+.cov-city-dot{width:8px;height:8px;border-radius:50%;background:var(--o);flex-shrink:0;animation:ping 3s ease-out infinite}
+.cov-city-name{font-size:.8rem;font-weight:600}
+.cov-city-count{font-family:var(--mono);font-size:.62rem;color:var(--mu)}
+.cov-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
+.cov-stat{background:var(--s2);border:1px solid var(--bd);padding:1.2rem;text-align:center}
+.cov-stat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--o)}
+.cov-stat-lbl{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:5px}
+
+/* ─── HOW ─── */
+#how{background:var(--ink)}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+.how-line{position:absolute;top:19px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,var(--o) 15%,var(--o) 85%,transparent)}
+.how-step{padding:0 2rem 0 0}
+.how-num{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;color:var(--o);margin-bottom:2rem;display:flex;align-items:center;gap:10px}
+.how-num::before{content:'';width:9px;height:9px;min-width:9px;border-radius:50%;background:var(--o);box-shadow:0 0 0 3px rgba(255,77,0,.18)}
+.how-title{font-size:.94rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.55rem}
+.how-desc{font-size:.77rem;color:var(--mu);line-height:1.65}
+
+/* ─── TESTIMONIALS ─── */
+#testimonials{background:#080808}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.tcard{background:var(--s2);border:1px solid var(--bd);padding:2rem;position:relative;overflow:hidden;transition:border-color .3s,transform .3s var(--ease)}
+.tcard:hover{border-color:rgba(255,77,0,.25);transform:translateY(-4px)}
+.tcard::before{content:'\201C';position:absolute;top:-1rem;right:1.5rem;font-size:8rem;color:rgba(255,77,0,.06);font-family:Georgia,serif;line-height:1;pointer-events:none}
+.tcard-stars{display:flex;gap:3px;margin-bottom:1rem}
+.tcard-star{width:12px;height:12px;fill:var(--o)}
+.tcard-body{font-size:.82rem;color:var(--mu);line-height:1.75;margin-bottom:1.4rem}
+.tcard-footer{display:flex;align-items:center;gap:.85rem;padding-top:1.1rem;border-top:1px solid var(--bd)}
+.tcard-av{width:38px;height:38px;border-radius:50%;background:var(--o3);border:1.5px solid rgba(255,77,0,.25);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;color:var(--o);flex-shrink:0}
+.tcard-name{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.tcard-loc{font-size:.68rem;color:var(--mu);margin-top:2px}
+.tcard-pkg{font-family:var(--mono);font-size:.53rem;letter-spacing:.14em;text-transform:uppercase;color:var(--o);background:var(--o4);border:1px solid rgba(255,77,0,.15);padding:.24rem .6rem;margin-left:auto;white-space:nowrap}
+
+/* ─── TRUST BADGES ─── */
+#trust{background:var(--ink);border-top:1px solid var(--bd)}
+.trust-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.trust-badges{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.tbadge{background:var(--s2);border:1px solid var(--bd);padding:1.5rem;display:flex;flex-direction:column;gap:.8rem;transition:border-color .25s,transform .3s var(--ease)}
+.tbadge:hover{border-color:rgba(255,77,0,.3);transform:translateY(-3px)}
+.tbadge-icon{width:44px;height:44px;background:var(--o4);border:1px solid rgba(255,77,0,.18);display:flex;align-items:center;justify-content:center}
+.tbadge-icon svg{width:20px;height:20px;stroke:var(--o);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tbadge-title{font-size:.84rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.tbadge-desc{font-size:.74rem;color:var(--mu);line-height:1.6}
+.trust-nums{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.tnum{background:var(--s2);border:1px solid var(--bd);padding:1.8rem;text-align:center}
+.tnum-val{font-family:var(--mono);font-size:2.2rem;font-weight:700;color:var(--o);line-height:1}
+.tnum-lbl{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:6px}
+
+/* ─── CASE STUDIES ─── */
+#cases{background:#080808}
+.cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.ccase{background:var(--s2);border:1px solid var(--bd);overflow:hidden;transition:border-color .3s}
+.ccase:hover{border-color:rgba(255,77,0,.3)}
+.ccase-head{padding:2rem 2rem 0}
+.ccase-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem;padding:.3rem .75rem;border:1px solid}
+.ccase-badge.recovered{color:#30d158;border-color:rgba(48,209,88,.3);background:rgba(48,209,88,.06)}
+.ccase-badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:ping 2s ease-out infinite}
+.ccase-title{font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-bottom:.4rem}
+.ccase-sub{font-size:.78rem;color:var(--mu);line-height:1.6;margin-bottom:1.5rem}
+.ccase-timeline{position:relative;padding-left:1.2rem;border-left:1.5px solid var(--bd);margin:0 2rem}
+.ccase-event{padding:.65rem 0}
+.ccase-event::before{content:'';position:absolute;left:-.42rem;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--o);background:var(--ink)}
+.ccase-event.done::before{background:var(--o)}
+.ccase-etime{font-family:var(--mono);font-size:.57rem;letter-spacing:.12em;color:var(--o);margin-bottom:2px}
+.ccase-etext{font-size:.77rem;color:var(--mu)}
+.ccase-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);margin-top:1.5rem;border-top:1px solid var(--bd)}
+.ccase-metric{background:var(--s2);padding:1rem;text-align:center}
+.ccase-mval{font-family:var(--mono);font-size:.95rem;font-weight:700;color:var(--o)}
+.ccase-mlbl{font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:3px}
+
+/* ─── WHY ─── */
+#why{background:var(--ink)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:5.5rem;align-items:start}
+.why-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:2.5rem}
+.why-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.14em;text-transform:uppercase;color:var(--o);padding:.35rem .9rem;border:1px solid rgba(255,77,0,.22);transition:background .2s,color .2s;cursor:default}
+.why-tag:hover{background:var(--o);color:#fff}
+.why-list{list-style:none}
+.why-item{display:grid;grid-template-columns:46px 1fr;gap:1rem;padding:1.5rem 0;border-bottom:1px solid var(--bd)}
+.why-item:last-child{border-bottom:none}
+.wi-icon{width:42px;height:42px;background:var(--o4);border:1px solid rgba(255,77,0,.15);display:flex;align-items:center;justify-content:center}
+.wi-icon svg{width:19px;height:19px;stroke:var(--o);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wi-title{font-size:.88rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.wi-desc{font-size:.77rem;color:var(--mu);line-height:1.62}
+
+/* ─── QUOTE ─── */
+#quote{background:var(--ink);position:relative}
+#quote::before{content:'';position:absolute;top:0;left:3.5rem;right:3.5rem;height:1px;background:linear-gradient(to right,transparent,var(--o) 25%,var(--o) 75%,transparent)}
+.q-grid{display:grid;grid-template-columns:1fr 1.55fr;gap:5.5rem;align-items:start}
+.q-left{position:sticky;top:90px}
+.q-contact{margin-top:2.5rem;background:var(--s2);border:1px solid var(--bd);border-left:3px solid var(--o);padding:1.4rem 1.6rem}
+.q-crow{display:flex;align-items:center;gap:10px;font-size:.77rem;color:var(--mu);padding:.45rem 0;border-bottom:1px solid var(--bd)}
+.q-crow:last-child{border-bottom:none}
+.q-crow svg{width:14px;height:14px;stroke:var(--o);fill:none;stroke-width:1.8;flex-shrink:0;stroke-linecap:round}
+.q-crow strong{color:#fff}
+.form-card{background:var(--s2);border:1px solid var(--bd);padding:2.5rem}
+.fs-head{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--o);margin:1.8rem 0 1rem;display:flex;align-items:center;gap:10px}
+.fs-head:first-child{margin-top:0}
+.fs-head::after{content:'';flex:1;height:1px;background:var(--bd)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:.42rem}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--s3);border:1px solid var(--bd2);color:#fff;padding:.8rem 1rem;font-family:var(--sans);font-size:.84rem;outline:none;transition:border-color .2s,background .2s;appearance:none;-webkit-appearance:none}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--mu2)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--o);background:rgba(255,77,0,.04)}
+.fg select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%236a6a6a' stroke-width='1.5' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:10px;background-color:var(--s3);color:#fff}
+.fg select option{background:var(--s3);color:#fff}
+.fg textarea{resize:vertical;min-height:100px}
+.form-submit{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:1.5rem;background:#25D366;color:#fff;border:none;padding:1.1rem;font-family:var(--sans);font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%)}
+.form-submit:hover{background:#1da851;transform:translateY(-1px)}
+.form-submit svg{width:18px;height:18px;fill:#fff}
+.form-note{font-size:.67rem;color:var(--mu);text-align:center;margin-top:.85rem;line-height:1.5}
+.success-state{display:none;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:3rem;text-align:center}
+.success-state.show{display:flex}
+.s-icon{width:56px;height:56px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.s-icon svg{width:24px;height:24px;stroke:#25D366;fill:none;stroke-width:2.5;stroke-linecap:round}
+.s-title2{font-size:1rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.s-desc{font-size:.8rem;color:var(--mu);line-height:1.6;max-width:280px}
+
+/* ─── WA FLOAT ─── */
+#wa-btn{position:fixed;bottom:26px;right:26px;z-index:998;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.3);cursor:pointer;text-decoration:none;transition:transform .25s var(--ease);animation:bob 3.5s ease-in-out infinite}
+#wa-btn:hover{animation:none;transform:scale(1.1)}
+#wa-btn svg{width:25px;height:25px;fill:#fff}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ─── FOOTER ─── */
+footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem}
+.foot-brand{font-weight:800;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.foot-brand span{color:var(--o)}
+.foot-tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;color:var(--mu);text-transform:uppercase;text-align:center}
+.foot-copy{font-size:.7rem;color:var(--mu);text-align:right}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .svc:nth-child(4n){border-right:1px solid var(--bd)}
+  .svc:nth-child(2n){border-right:none}
+  .svc:nth-last-child(-n+4){border-bottom:1px solid var(--bd)}
+  .svc:nth-last-child(-n+2){border-bottom:none}
+  .prd-grid,.cases-grid,.coverage-grid,.trust-inner,.why-grid,.dash-inner,.q-grid,.story-grid{grid-template-columns:1fr;gap:3rem}
+  .q-left{position:static}
+  .story-visual{height:320px}
+  .hud-card.hud-tr,.hud-card.hud-br{display:none}
+}
+@media(max-width:768px){
+  #nav{padding:0 1.2rem}.nav-links{display:none}
+  .section{padding:5rem 1.2rem}
+  #hero{padding:0 1.2rem 4rem}
+  .hero-stats{gap:1.5rem;flex-wrap:wrap}
+  .how-grid{grid-template-columns:1fr 1fr;gap:2rem}.how-line{display:none}
+  .testi-grid{grid-template-columns:1fr}
+  footer{grid-template-columns:1fr;text-align:center}.foot-copy{text-align:center}
+  .frow{grid-template-columns:1fr}.form-card{padding:1.5rem}
+  .photo-strip{height:200px}
+  .map-left-panel{width:200px;padding:1.2rem}
+  .hud-card.hud-tl{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- WA FLOAT -->
+<a id="wa-btn" href="https://wa.me/2349022572158" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-lm">
+      <svg viewBox="0 0 60 20" fill="none">
+        <circle cx="5" cy="10" r="3.5" fill="#FF4D00"/><circle cx="14" cy="4" r="3" fill="#FF4D00"/><circle cx="14" cy="16" r="3" fill="#FF4D00"/>
+        <line x1="5" y1="10" x2="14" y2="4" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="10" x2="14" y2="16" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="26" cy="4" r="3" fill="#FF4D00"/><circle cx="26" cy="16" r="3" fill="#FF4D00"/><circle cx="33" cy="10" r="3.5" fill="#FF4D00"/>
+        <line x1="26" y1="4" x2="33" y2="10" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/><line x1="26" y1="16" x2="33" y2="10" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="47" cy="10" r="3.5" fill="#FF4D00"/><circle cx="56" cy="4" r="3" fill="#FF4D00"/><circle cx="56" cy="16" r="3" fill="#FF4D00"/>
+        <line x1="47" y1="10" x2="56" y2="4" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/><line x1="47" y1="10" x2="56" y2="16" stroke="#FF4D00" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="nav-wm"><b>VNS</b><small>Verified Network Solutions</small></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#products">Pricing</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="#quote" class="nav-cta">Get a Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div id="hero-bg">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+
+  <!-- Real photography from Unsplash (night city + car) -->
+  <div class="hero-photo">
+    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80&auto=format&fit=crop" alt="Vehicle tracking at night" loading="eager" crossorigin="anonymous">
+  </div>
+
+  <!-- Animated HUD overlays -->
+  <div class="hero-hud">
+    <div class="hud-card hud-tl">
+      <div class="hud-live"><span class="hud-live-dot"></span>Live Tracking</div>
+      <div class="hud-row">
+        <div class="hud-metric"><div class="hud-metric-val" id="hud-speed">82</div><div class="hud-metric-lbl">km/h</div></div>
+        <div class="hud-metric"><div class="hud-metric-val" id="hud-lat">6.4531</div><div class="hud-metric-lbl">Lat</div></div>
+        <div class="hud-metric"><div class="hud-metric-val" id="hud-lon">3.3958</div><div class="hud-metric-lbl">Lon</div></div>
+      </div>
+      <div class="hud-bar-wrap"><div class="hud-bar"></div></div>
+    </div>
+    <div class="hud-card hud-tr">
+      <div class="hud-label">Signal Status</div>
+      <div class="hud-val">&#x25CF; GPS Lock</div>
+      <div class="hud-sub">Satellites: 9 &nbsp;&middot;&nbsp; Accuracy: 3m</div>
+    </div>
+    <div class="hud-card hud-br">
+      <div class="hud-label">Today&#39;s Activity</div>
+      <div class="hud-row">
+        <div class="hud-metric"><div class="hud-metric-val">247</div><div class="hud-metric-lbl">km</div></div>
+        <div class="hud-metric"><div class="hud-metric-val">4</div><div class="hud-metric-lbl">Trips</div></div>
+        <div class="hud-metric"><div class="hud-metric-val">6h</div><div class="hud-metric-lbl">Drive</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-chip"><span class="chip-dot"></span>Live Vehicle Intelligence &middot; Nigeria</div>
+    <h1 class="hero-h1">
+      Track.<br>
+      <em>Protect.</em><br>
+      <span class="ghost">Drive With</span><br>
+      Confidence.
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">Advanced GPS tracking, dash cam installation, and vehicle security solutions for individuals and businesses across Nigeria.</p>
+      <div class="hero-acts">
+        <a href="#quote" class="btn btn-fill">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="#products" class="btn btn-outline">View Packages</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-n" id="cnt-500">0+</div><div class="stat-l">Vehicles Tracked</div></div>
+      <div><div class="stat-n">24/7</div><div class="stat-l">Live Monitoring</div></div>
+      <div><div class="stat-n" id="cnt-99">0%</div><div class="stat-l">Recovery Rate</div></div>
+      <div><div class="stat-n">&lt;2hr</div><div class="stat-l">Quote Response</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-item">GPS Vehicle Tracking <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Dash Cam Installation <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Engine Shutdown <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Route Playback <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Fleet Management <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Geofencing Alerts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Vehicle Recovery <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Real-Time Monitoring <span class="ticker-dot"></span></span>
+    <span class="ticker-item">GPS Vehicle Tracking <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Dash Cam Installation <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Engine Shutdown <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Route Playback <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Fleet Management <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Geofencing Alerts <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Vehicle Recovery <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Real-Time Monitoring <span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- ═══════ REAL PHOTO STRIP ═══════ -->
+<div id="photos">
+  <div class="photo-strip">
+    <div class="photo-cell">
+      <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=600&q=75&auto=format&fit=crop&crop=center" alt="GPS tracker installation" loading="lazy" crossorigin="anonymous">
+      <div class="photo-cell-num">01</div>
+      <div class="photo-cell-label">Professional Installation</div>
+    </div>
+    <div class="photo-cell">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75&auto=format&fit=crop&crop=center" alt="Dash cam fitted in vehicle" loading="lazy" crossorigin="anonymous">
+      <div class="photo-cell-num">02</div>
+      <div class="photo-cell-label">Dash Cam Fitting</div>
+    </div>
+    <div class="photo-cell">
+      <img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=600&q=75&auto=format&fit=crop&crop=center" alt="Vehicle being tracked on map" loading="lazy" crossorigin="anonymous">
+      <div class="photo-cell-num">03</div>
+      <div class="photo-cell-label">Live Tracking Dashboard</div>
+    </div>
+    <div class="photo-cell">
+      <img src="https://images.unsplash.com/photo-1471479917193-f00955256257?w=600&q=75&auto=format&fit=crop&crop=center" alt="Night city road" loading="lazy" crossorigin="anonymous">
+      <div class="photo-cell-num">04</div>
+      <div class="photo-cell-label">24/7 Monitoring</div>
+    </div>
+    <div class="photo-cell">
+      <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=75&auto=format&fit=crop&crop=center" alt="Fleet vehicles" loading="lazy" crossorigin="anonymous">
+      <div class="photo-cell-num">05</div>
+      <div class="photo-cell-label">Fleet Management</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SERVICES ═══════ -->
+<section class="section" id="services">
+  <div class="sr"><div class="s-eye">What We Do</div></div>
+  <div class="sr sr-d1"><h2 class="s-title">Our <em>Services</em></h2></div>
+  <div class="sr sr-d2"><p class="s-body">End-to-end vehicle security built for reliability, speed, and peace of mind &mdash; from single cars to entire fleets.</p></div>
+  <div class="svc-grid sr sr-d3">
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2a8 8 0 010 20M12 2a8 8 0 000 20M2 12h20"/></svg></div><div class="svc-bar"></div><div class="svc-n">GPS Vehicle Tracking</div><p class="svc-d">Real-time location for all vehicle types. Know exactly where your vehicle is, every second.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="svc-bar"></div><div class="svc-n">Live Dash Cam Install</div><p class="svc-d">Full HD 1080P, 140&deg; FOV. Professional fitting. Evidence you can rely on, day or night.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="svc-bar"></div><div class="svc-n">Route Playback</div><p class="svc-d">Full journey history and trip logs accessible from your phone. Every route recorded.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="svc-bar"></div><div class="svc-n">Engine Shutdown</div><p class="svc-d">Remotely immobilize your vehicle in seconds if theft or unauthorized use is detected.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="svc-bar"></div><div class="svc-n">Fleet Management</div><p class="svc-d">Monitor your full fleet from one dashboard. Cut costs, optimize routes, hold drivers accountable.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="svc-bar"></div><div class="svc-n">Geofencing Alerts</div><p class="svc-d">Set virtual zones. Get instant alerts the moment your vehicle crosses a boundary.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-bar"></div><div class="svc-n">Vehicle Recovery</div><p class="svc-d">If it&#39;s stolen, our team works with you using live GPS data to get it back fast.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    <div class="svc"><div class="svc-glow"></div><div class="svc-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div><div class="svc-bar"></div><div class="svc-n">Installation &amp; Support</div><p class="svc-d">Certified technicians. Clean installs. Ongoing support to keep your system perfect.</p><div class="svc-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+  </div>
+</section>
+
+<!-- ═══════ PRODUCTS ═══════ -->
+<section class="section" id="products">
+  <div class="sr"><div class="s-eye">Packages &amp; Pricing</div></div>
+  <div class="sr sr-d1"><h2 class="s-title">Choose Your <em>Package</em></h2></div>
+  <div class="sr sr-d2"><p class="s-body">Transparent pricing for every vehicle. All packages include professional installation and 12-month support.</p></div>
+  <div class="prd-grid">
+    <div class="pc sr sr-d1">
+      <div class="pc-head"><div class="pc-cat">GPS Tracker</div><div class="pc-name">Vehicle GPS Tracker</div><p class="pc-desc">Hardwired multi-wire tracker. Real-time monitoring, engine shutdown, and fleet support.</p></div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>Real-time location tracking</li><li>Remote engine shutdown</li><li>Route history &amp; playback</li><li>Geofencing alerts</li><li>Multi-wire harness install</li><li>12-month tech support</li></ul>
+        <table class="ptbl"><tr><td>2000&ndash;2012 Model</td><td>&#8358;85,000</td></tr><tr><td>2013&ndash;2020 Model</td><td>&#8358;110,000</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="pc feat sr sr-d2">
+      <div class="pc-head"><div class="pc-badge">Most Popular</div><div class="pc-cat">Dash Cam</div><div class="pc-name">Full HD Dash Cam</div><p class="pc-desc">F/NO 2.2, 140&deg; FOV, Full HD 1080P at 30FPS. Crystal-clear footage day and night.</p></div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>Full HD 1080P @ 30FPS</li><li>140&deg; wide-angle FOV</li><li>F/NO 2.2 low-light aperture</li><li>Loop recording</li><li>G-sensor incident lock</li><li>Certified professional install</li></ul>
+        <table class="ptbl"><tr><td>2000&ndash;2012 Model</td><td>&#8358;85,000</td></tr><tr><td>2013&ndash;2020 Model</td><td>&#8358;110,000</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="pc sr sr-d3">
+      <div class="pc-head"><div class="pc-cat">Motorcycle</div><div class="pc-name">Bike Tracker</div><p class="pc-desc">Compact, weather-resistant GPS tracker built specifically for motorcycles and power bikes.</p></div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>Real-time GPS tracking</li><li>Compact covert design</li><li>Remote engine shutdown</li><li>Anti-tamper alerts</li><li>Waterproof housing</li><li>12-month tech support</li></ul>
+        <table class="ptbl"><tr><td>All Bike Models</td><td>&#8358;50,000</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COMPANY STORY ═══════ -->
+<section class="section" id="story" style="padding:0">
+  <div class="story-grid">
+    <div class="story-visual sr">
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&q=80&auto=format&fit=crop&crop=center" alt="VNS team at work" loading="lazy" crossorigin="anonymous">
+      <div class="story-visual-badge">
+        <div class="story-visual-badge-year">2022</div>
+        <div class="story-visual-badge-text">Founded in Lagos</div>
+      </div>
+    </div>
+    <div class="story-content sr sr-d2">
+      <div class="s-eye">Our Story</div>
+      <h2 class="s-title">Built by<br><em>Nigerians,</em><br>for Nigerians.</h2>
+      <blockquote class="story-quote">&ldquo;We started VNS because we were tired of watching friends lose their vehicles with no way to find them. We knew technology could change that.&rdquo;</blockquote>
+      <p class="story-body">Verified Network Solutions was founded in Lagos in 2022 with a single goal: give every Nigerian vehicle owner the same level of protection that multinational fleets enjoy. We started with two technicians, a van, and a belief that affordable, professional-grade tracking would transform how people protect what matters most.<br><br>Today we operate across 18 Nigerian cities, with a team of certified installation engineers and a customer success rate that speaks for itself. Every tracker we install. Every dash cam we fit. Every fleet we manage. All backed by the same promise: as sure as the sunrise.</p>
+      <div class="story-milestones">
+        <div class="milestone"><div class="milestone-year">2022</div><div class="milestone-text"><strong>Founded in Lagos</strong>First 50 vehicles tracked. Zero recoveries failed.</div></div>
+        <div class="milestone"><div class="milestone-year">2023</div><div class="milestone-text"><strong>National Expansion</strong>Opened in Abuja, Port Harcourt, Kano, and 8 more cities.</div></div>
+        <div class="milestone"><div class="milestone-year">2024</div><div class="milestone-text"><strong>Fleet Division Launched</strong>Corporate fleet contracts with logistics companies across Nigeria.</div></div>
+        <div class="milestone"><div class="milestone-year">2025</div><div class="milestone-text"><strong>500+ Active Trackers</strong>99% recovery rate. Trusted by hundreds of individuals and businesses.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ LIVE MAP ═══════ -->
+<div id="livemap">
+  <canvas id="map-canvas"></canvas>
+  <div class="map-overlay">
+    <div class="map-left-panel sr">
+      <div class="mp-title"><span class="mp-live-dot"></span>Live Fleet &mdash; Lagos</div>
+      <div class="mp-vehicle"><div class="mp-vdot active"></div><div class="mp-vname">Toyota Camry &middot; Lekki</div><div class="mp-vspeed">82 km/h</div></div>
+      <div class="mp-vehicle"><div class="mp-vdot active"></div><div class="mp-vname">Honda CR-V &middot; Victoria Island</div><div class="mp-vspeed">47 km/h</div></div>
+      <div class="mp-vehicle"><div class="mp-vdot idle"></div><div class="mp-vname">Lexus ES350 &middot; Ikeja</div><div class="mp-vspeed">Parked</div></div>
+      <div class="mp-vehicle"><div class="mp-vdot alert"></div><div class="mp-vname">Kia Sorento &middot; Berger</div><div class="mp-vspeed">Alert</div></div>
+      <div class="mp-vehicle"><div class="mp-vdot active"></div><div class="mp-vname">Ford Ranger &middot; Oshodi</div><div class="mp-vspeed">63 km/h</div></div>
+      <div class="mp-kpi-row">
+        <div class="mp-kpi"><div class="mp-kpi-val">5</div><div class="mp-kpi-lbl">Online</div></div>
+        <div class="mp-kpi"><div class="mp-kpi-val">1</div><div class="mp-kpi-lbl">Alert</div></div>
+        <div class="mp-kpi"><div class="mp-kpi-val">1</div><div class="mp-kpi-lbl">Parked</div></div>
+      </div>
+      <div class="mp-alert"><span class="mp-alert-dot"></span>Geofence breach &middot; Kia Sorento</div>
+    </div>
+    <div class="map-right-info">
+      <div class="map-tag">GPS Coverage<span>Lagos Metropolitan Area</span></div>
+      <div class="map-tag">Last Update<span id="map-time">Just now</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ DASHBOARD ═══════ -->
+<section class="section" id="dash" style="background:#060606;border-top:1px solid var(--bd)">
+  <div class="dash-inner">
+    <div>
+      <div class="sr"><div class="s-eye">Live Dashboard Preview</div></div>
+      <div class="sr sr-d1"><h2 class="s-title">Your Fleet.<br><em>One Screen.</em></h2></div>
+      <div class="sr sr-d2"><p class="s-body">The VNS tracking platform gives you a live view of every vehicle &mdash; speed, location, alerts, and trip history &mdash; from your phone or browser, 24/7.</p></div>
+      <ul style="list-style:none" class="sr sr-d3">
+        <li style="display:flex;align-items:center;gap:10px;padding:.7rem 0;border-bottom:1px solid var(--bd);font-size:.8rem;color:var(--mu)"><span style="width:5px;height:5px;border-radius:50%;background:var(--o);display:block;flex-shrink:0"></span>Live location map with street-level detail</li>
+        <li style="display:flex;align-items:center;gap:10px;padding:.7rem 0;border-bottom:1px solid var(--bd);font-size:.8rem;color:var(--mu)"><span style="width:5px;height:5px;border-radius:50%;background:var(--o);display:block;flex-shrink:0"></span>Speed, engine status, and trip distance</li>
+        <li style="display:flex;align-items:center;gap:10px;padding:.7rem 0;border-bottom:1px solid var(--bd);font-size:.8rem;color:var(--mu)"><span style="width:5px;height:5px;border-radius:50%;background:var(--o);display:block;flex-shrink:0"></span>Instant geofence and theft push alerts</li>
+        <li style="display:flex;align-items:center;gap:10px;padding:.7rem 0;font-size:.8rem;color:var(--mu)"><span style="width:5px;height:5px;border-radius:50%;background:var(--o);display:block;flex-shrink:0"></span>30-day full route history replay</li>
+      </ul>
+    </div>
+    <div class="dash-mockup sr sr-d2">
+      <div class="dash-screen">
+        <div class="dash-topbar">
+          <div class="dash-dots"><div class="dash-dot-btn"></div><div class="dash-dot-btn"></div><div class="dash-dot-btn"></div></div>
+          <div class="dash-url">vns-dashboard.com/fleet/live</div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-kpi-row">
+            <div class="dash-kpi"><div class="dash-kpi-val">7</div><div class="dash-kpi-lbl">Online</div></div>
+            <div class="dash-kpi"><div class="dash-kpi-val">2</div><div class="dash-kpi-lbl">Parked</div></div>
+            <div class="dash-kpi"><div class="dash-kpi-val" style="color:#ff3b30">1</div><div class="dash-kpi-lbl">Alert</div></div>
+            <div class="dash-kpi"><div class="dash-kpi-val" id="kpi-km">347</div><div class="dash-kpi-lbl">km Today</div></div>
+          </div>
+          <div class="dash-map-area"><canvas id="dash-mini-canvas"></canvas></div>
+          <div class="dash-list">
+            <div class="dash-row"><div class="dash-rdot on"></div><div class="dash-rname">Toyota Camry &middot; ABJ-234-LA</div><div class="dash-rspeed">82 km/h</div><div class="dash-rloc">Lekki</div></div>
+            <div class="dash-row"><div class="dash-rdot warn"></div><div class="dash-rname">Kia Sorento &middot; LND-891-LA</div><div class="dash-rspeed">0 km/h</div><div class="dash-rloc" style="color:#ff3b30">&#9888; Alert</div></div>
+            <div class="dash-row"><div class="dash-rdot on"></div><div class="dash-rname">Honda CR-V &middot; MUS-442-LA</div><div class="dash-rspeed">47 km/h</div><div class="dash-rloc">Victoria Is.</div></div>
+            <div class="dash-row"><div class="dash-rdot off"></div><div class="dash-rname">Lexus ES350 &middot; KJA-778-LA</div><div class="dash-rspeed">Parked</div><div class="dash-rloc">Ikeja</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ HOW IT WORKS ═══════ -->
+<section class="section" id="how">
+  <div class="sr"><div class="s-eye">The Process</div></div>
+  <div class="sr sr-d1"><h2 class="s-title">How It <em>Works</em></h2></div>
+  <div class="sr sr-d2"><p class="s-body">From first contact to live vehicle tracking in as little as 24 hours.</p></div>
+  <div class="how-grid">
+    <div class="how-line"></div>
+    <div class="how-step sr sr-d1"><div class="how-num">STEP 01</div><div class="how-title">Request a Quote</div><p class="how-desc">Fill the form with your vehicle details and package. We respond via WhatsApp in under 2 hours.</p></div>
+    <div class="how-step sr sr-d2"><div class="how-num">STEP 02</div><div class="how-title">Schedule Install</div><p class="how-desc">Pick a time that works. Our certified technicians come to you, or visit our installation centre.</p></div>
+    <div class="how-step sr sr-d3"><div class="how-num">STEP 03</div><div class="how-title">Expert Fitting</div><p class="how-desc">Professional installation, fully tested before we leave. Clean work, every time &mdash; guaranteed.</p></div>
+    <div class="how-step sr sr-d4"><div class="how-num">STEP 04</div><div class="how-title">Go Live</div><p class="how-desc">Your vehicle is on the live tracking platform. Monitor from your phone anywhere, anytime.</p></div>
+  </div>
+</section>
+
+<!-- ═══════ TESTIMONIALS ═══════ -->
+<section class="section" id="testimonials" style="background:#080808">
+  <div class="sr"><div class="s-eye">Customer Reviews</div></div>
+  <div class="sr sr-d1"><h2 class="s-title">Trusted Across <em>Nigeria</em></h2></div>
+  <div class="sr sr-d2"><p class="s-body">Real customers, real results. Here&#39;s what people who trust VNS with their vehicles say.</p></div>
+  <div class="testi-grid">
+    <div class="tcard sr sr-d1">
+      <div class="tcard-stars"><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="tcard-body">&ldquo;My Toyota was stolen from my estate at 2am. VNS tracked it to Ojota in under 20 minutes. The police recovered it the same morning. I can&rsquo;t put a price on that peace of mind.&rdquo;</p>
+      <div class="tcard-footer"><div class="tcard-av">AO</div><div><div class="tcard-name">Adebayo Okonkwo</div><div class="tcard-loc">Lekki, Lagos</div></div><div class="tcard-pkg">GPS Tracker</div></div>
+    </div>
+    <div class="tcard sr sr-d2">
+      <div class="tcard-stars"><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="tcard-body">&ldquo;We run logistics with 18 vehicles. VNS installed trackers across the fleet in two days. Our fuel costs dropped 22% in the first month from monitoring driver behaviour. Incredible ROI.&rdquo;</p>
+      <div class="tcard-footer"><div class="tcard-av">CN</div><div><div class="tcard-name">Chidi Nwachukwu</div><div class="tcard-loc">Port Harcourt</div></div><div class="tcard-pkg">Fleet Plan</div></div>
+    </div>
+    <div class="tcard sr sr-d3">
+      <div class="tcard-stars"><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg class="tcard-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <p class="tcard-body">&ldquo;When another driver ran into me and tried to deny it, the dash cam footage cleared everything in minutes. Insurance settled in full. Best &#8358;85k I&rsquo;ve ever spent on this car.&rdquo;</p>
+      <div class="tcard-footer"><div class="tcard-av">FK</div><div><div class="tcard-name">Fatima Kwari</div><div class="tcard-loc">Abuja, FCT</div></div><div class="tcard-pkg">Dash Cam</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TRUST BADGES ═══════ -->
+<section class="section" id="trust" style="background:var(--ink);border-top:1px solid var(--bd)">
+  <div class="trust-inner">
+    <div>
+      <div class="sr"><div class="s-eye">Why Trust VNS</div></div>
+      <div class="sr sr-d1"><h2 class="s-title">Our<br><em>Guarantees</em></h2></div>
+      <div class="sr sr-d2"><p class="s-body" style="margin-bottom:0">Every install backed by certified expertise. These aren&rsquo;t just badges &mdash; they&rsquo;re promises we keep.</p></div>
+      <div class="trust-badges sr sr-d3">
+        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tbadge-title">Certified Installation</div><div class="tbadge-desc">Factory-grade wiring by trained engineers. Clean, covert, and built to last.</div></div>
+        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="tbadge-title">24/7 Support</div><div class="tbadge-desc">Always reachable. WhatsApp response in minutes, not hours.</div></div>
+        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="tbadge-title">99% Recovery Rate</div><div class="tbadge-desc">Verified across hundreds of theft incidents handled since 2022.</div></div>
+        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="tbadge-title">Cloud Platform</div><div class="tbadge-desc">Secure, always-on dashboard. Access your fleet from any device, anywhere.</div></div>
+      </div>
+    </div>
+    <div class="trust-nums sr sr-d2">
+      <div class="tnum"><div class="tnum-val" data-count="500">0</div><div class="tnum-lbl">Vehicles Tracked</div></div>
+      <div class="tnum"><div class="tnum-val" data-count="99">0</div><div class="tnum-lbl">% Recovery Rate</div></div>
+      <div class="tnum"><div class="tnum-val" data-count="3">0</div><div class="tnum-lbl">Years of Service</div></div>
+      <div class="tnum"><div class="tnum-val" data-count="18">0</div><div class="tnum-lbl">Cities Covered</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CASE STUDIES ═══════ -->
+<section class="section" id="cases" style="background:#080808">
+  <div class="sr"><div class="s-eye">Recovery Case Studies</div></div>
+  <div class="sr sr-d1"><h2 class="s-title">Before &amp; After:<br><em>Real Recoveries</em></h2></div>
+  <div class="sr sr-d2"><p class="s-body">Real recovery stories. Names changed for privacy, timelines are accurate.</p></div>
+  <div class="cases-grid">
+    <div class="ccase sr sr-d1">
+      <div class="ccase-head">
+        <div class="ccase-badge recovered"><span class="ccase-badge-dot"></span>Recovered</div>
+        <div class="ccase-title">2019 Toyota Fortuner &middot; Lagos</div>
+        <p class="ccase-sub">Stolen from a gated estate at 2am. Engine shutdown triggered remotely. Police directed to the exact GPS location.</p>
+      </div>
+      <div class="ccase-timeline">
+        <div class="ccase-event done"><div class="ccase-etime">00:00</div><div class="ccase-etext">Theft detected &mdash; ignition on while owner asleep</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">00:03</div><div class="ccase-etext">VNS alert sent via WhatsApp &amp; SMS instantly</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">00:06</div><div class="ccase-etext">Remote engine shutdown triggered via app</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">00:09</div><div class="ccase-etext">Live GPS coordinates shared with Lagos RRS</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">00:47</div><div class="ccase-etext">Vehicle recovered &mdash; two suspects apprehended</div></div>
+      </div>
+      <div class="ccase-foot">
+        <div class="ccase-metric"><div class="ccase-mval">47min</div><div class="ccase-mlbl">Recovery Time</div></div>
+        <div class="ccase-metric"><div class="ccase-mval">100%</div><div class="ccase-mlbl">Condition</div></div>
+        <div class="ccase-metric"><div class="ccase-mval">&#8358;0</div><div class="ccase-mlbl">Owner Loss</div></div>
+      </div>
+    </div>
+    <div class="ccase sr sr-d2">
+      <div class="ccase-head">
+        <div class="ccase-badge recovered"><span class="ccase-badge-dot"></span>Recovered</div>
+        <div class="ccase-title">2015 Honda Pilot &middot; Abuja</div>
+        <p class="ccase-sub">Hijacked at gunpoint on Airport Road. Live tracking maintained throughout. Engine shutdown triggered safely once occupants were clear.</p>
+      </div>
+      <div class="ccase-timeline">
+        <div class="ccase-event done"><div class="ccase-etime">14:22</div><div class="ccase-etext">Hijack reported via VNS emergency line</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">14:24</div><div class="ccase-etext">Live GPS feed activated &mdash; continuous tracking</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">14:58</div><div class="ccase-etext">Vehicle stopped in Karu &mdash; engine shutdown triggered</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">15:14</div><div class="ccase-etext">Police intercept &mdash; suspects fled on foot</div></div>
+        <div class="ccase-event done"><div class="ccase-etime">15:31</div><div class="ccase-etext">Vehicle recovered, all valuables intact</div></div>
+      </div>
+      <div class="ccase-foot">
+        <div class="ccase-metric"><div class="ccase-mval">69min</div><div class="ccase-mlbl">Recovery Time</div></div>
+        <div class="ccase-metric"><div class="ccase-mval">100%</div><div class="ccase-mlbl">Condition</div></div>
+        <div class="ccase-metric"><div class="ccase-mval">0</div><div class="ccase-mlbl">Injuries</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COVERAGE MAP ═══════ -->
+<section class="section" id="coverage">
+  <div class="coverage-grid">
+    <div>
+      <div class="sr"><div class="s-eye">Coverage Map</div></div>
+      <div class="sr sr-d1"><h2 class="s-title">We Cover<br><em>Nigeria.</em></h2></div>
+      <div class="sr sr-d2"><p class="s-body">From Lagos to Kano, Port Harcourt to Abuja &mdash; VNS operates in 18 cities with certified installation teams on the ground.</p></div>
+      <div class="cov-cities-grid sr sr-d3">
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Lagos</div><div class="cov-city-count">HQ &middot; 200+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Abuja</div><div class="cov-city-count">Branch &middot; 80+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Port Harcourt</div><div class="cov-city-count">Branch &middot; 60+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Kano</div><div class="cov-city-count">Partner &middot; 40+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Ibadan</div><div class="cov-city-count">Partner &middot; 30+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Enugu</div><div class="cov-city-count">Partner &middot; 25+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Benin City</div><div class="cov-city-count">Partner &middot; 20+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">+11 more cities</div><div class="cov-city-count">Nationwide coverage</div></div></div>
+      </div>
+      <div class="cov-stat-row sr sr-d4">
+        <div class="cov-stat"><div class="cov-stat-val" data-count="18">0</div><div class="cov-stat-lbl">Cities Active</div></div>
+        <div class="cov-stat"><div class="cov-stat-val" data-count="36">0</div><div class="cov-stat-lbl">States Served</div></div>
+      </div>
+    </div>
+    <div class="sr sr-d2">
+      <canvas id="cov-canvas" height="480"></canvas>
+      <div class="cov-legend">
+        <div class="cov-leg-item"><div class="cov-leg-dot" style="background:var(--o)"></div>Major Branch</div>
+        <div class="cov-leg-item"><div class="cov-leg-dot" style="background:rgba(255,77,0,.4)"></div>Partner City</div>
+        <div class="cov-leg-item"><div class="cov-leg-dot" style="background:rgba(255,77,0,.15)"></div>Coming Soon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ WHY VNS ═══════ -->
+<section class="section" id="why" style="background:#080808">
+  <div class="why-grid">
+    <div>
+      <div class="sr"><div class="s-eye">Why Choose VNS</div></div>
+      <div class="sr sr-d1"><h2 class="s-title">Built Different.<br><em>For Real.</em></h2></div>
+      <div class="sr sr-d2"><p class="s-body">VNS isn&#39;t just hardware &mdash; it&#39;s the confidence of knowing your vehicle is protected wherever it is.</p></div>
+      <div class="why-tags sr sr-d3"><span class="why-tag">GPS Tracking</span><span class="why-tag">Dash Cam</span><span class="why-tag">Engine Shutdown</span><span class="why-tag">Fleet Mgmt</span><span class="why-tag">Geofencing</span><span class="why-tag">Recovery</span><span class="why-tag">Route Playback</span><span class="why-tag">24/7 Monitor</span><span class="why-tag">Bike Tracking</span><span class="why-tag">Certified Install</span></div>
+    </div>
+    <ul class="why-list">
+      <li class="why-item sr sr-d1"><div class="wi-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="wi-title">Same-Day Install</div><p class="wi-desc">Most jobs done the day you book. Certified technicians who work fast and leave it clean.</p></div></li>
+      <li class="why-item sr sr-d2"><div class="wi-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div><div class="wi-title">Monitor From Anywhere</div><p class="wi-desc">Full live control from your smartphone. Location, history, alerts &mdash; one tap away, always.</p></div></li>
+      <li class="why-item sr sr-d3"><div class="wi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><div class="wi-title">Remote Engine Shutdown</div><p class="wi-desc">Shut the engine down instantly from anywhere in the world if your vehicle is stolen.</p></div></li>
+      <li class="why-item sr sr-d4"><div class="wi-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="wi-title">Trusted Across Nigeria</div><p class="wi-desc">Hundreds of verified customers, 99% recovery rate. As sure as the sunrise &mdash; every time.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════ QUOTE FORM ═══════ -->
+<section class="section" id="quote">
+  <div class="q-grid">
+    <div class="q-left">
+      <div class="sr"><div class="s-eye">Get a Quote</div></div>
+      <div class="sr sr-d1"><h2 class="s-title">Let&#39;s Secure<br><em>Your Vehicle</em></h2></div>
+      <div class="sr sr-d2"><p class="s-body">Fill in your details and we&#39;ll send a personalised quote via WhatsApp within 2 hours. No commitment required.</p></div>
+      <div class="q-contact sr sr-d3">
+        <div class="q-crow"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.28-1.28a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>WhatsApp: <strong>+234 902 257 2158</strong></span></div>
+        <div class="q-crow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>Web: <strong>VerifiedNetworkSolution.com</strong></span></div>
+        <div class="q-crow"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span>Instagram: <strong>@Verifiednetworksolution</strong></span></div>
+        <div class="q-crow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Hours: <strong>Mon&ndash;Sat, 8AM&ndash;6PM</strong></span></div>
+      </div>
+    </div>
+    <div class="sr sr-d2">
+      <div class="form-card">
+        <form id="quoteForm" novalidate>
+          <div class="fs-head">Personal Information</div>
+          <div class="frow"><div class="fg"><label>First Name *</label><input type="text" id="f-fn" placeholder="Chukwuemeka" required autocomplete="given-name"></div><div class="fg"><label>Last Name *</label><input type="text" id="f-ln" placeholder="Okafor" required autocomplete="family-name"></div></div>
+          <div class="fg"><label>Email Address *</label><input type="email" id="f-em" placeholder="emeka@example.com" required autocomplete="email"></div>
+          <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="f-wa" placeholder="+234 812 345 6789" required autocomplete="tel"></div>
+          <div class="fg"><label>Home / Delivery Address *</label><input type="text" id="f-ad" placeholder="Street, City, State" required autocomplete="street-address"></div>
+          <div class="fs-head">Vehicle Details</div>
+          <div class="frow"><div class="fg"><label>Vehicle Type *</label><select id="f-vt" required><option value="" disabled selected>Select type</option><option>Car / SUV</option><option>Bus / Minivan</option><option>Truck / Lorry</option><option>Motorcycle / Bike</option><option>Other</option></select></div><div class="fg"><label>Year Range *</label><select id="f-yr" required><option value="" disabled selected>Select range</option><option>2000&ndash;2012</option><option>2013&ndash;2020</option><option>2021 &amp; above</option></select></div></div>
+          <div class="frow"><div class="fg"><label>Make / Brand</label><input type="text" id="f-mk" placeholder="Toyota, Honda&hellip;"></div><div class="fg"><label>Model</label><input type="text" id="f-mo" placeholder="Camry, Corolla&hellip;"></div></div>
+          <div class="fs-head">Package Selection</div>
+          <div class="fg"><label>Package *</label><select id="f-pk" required><option value="" disabled selected>Select a package</option><option>GPS Tracker &mdash; &#8358;85,000 (2000&ndash;2012)</option><option>GPS Tracker &mdash; &#8358;110,000 (2013&ndash;2020)</option><option>Full HD Dash Cam &mdash; &#8358;85,000 (2000&ndash;2012)</option><option>Full HD Dash Cam &mdash; &#8358;110,000 (2013&ndash;2020)</option><option>Bike Tracker &mdash; &#8358;50,000 (all models)</option><option>GPS Tracker + Dash Cam Bundle</option><option>Fleet Management (multiple vehicles)</option><option>Not sure &mdash; help me choose</option></select></div>
+          <div class="fg"><label>Additional Notes</label><textarea id="f-no" placeholder="Any questions, requirements, or vehicle details&hellip;"></textarea></div>
+          <button type="submit" class="form-submit"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Send via WhatsApp</button>
+          <p class="form-note">Opens WhatsApp with your details pre-filled &mdash; just tap Send.</p>
+        </form>
+        <div class="success-state" id="sState"><div class="s-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="s-title2">WhatsApp Opened!</div><p class="s-desc">Your quote details are pre-filled. Just tap Send and we&#39;ll reply within 2 hours.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-brand"><span>VNS</span> &mdash; Verified Network Solutions</div>
+  <div class="foot-tag">Track. Protect. Drive With Confidence.</div>
+  <div class="foot-copy">&copy; 2025 Verified Network Solutions. All rights reserved.</div>
+</footer>
+
+<script>
+/* ── HERO CANVAS (GPS particle network) ── */
+!function(){
+  const c=document.getElementById('hero-canvas'),x=c.getContext('2d');
+  let W,H,N=[],raf;
+  const resize=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight};
+  const init=()=>{N=[];const n=Math.floor(W*H/13000);for(let i=0;i<n;i++)N.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.5+.6,p:Math.random()*Math.PI*2,hub:Math.random()<.1})};
+  const draw=()=>{x.clearRect(0,0,W,H);N.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;n.p+=.02});
+    for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const dx=N[i].x-N[j].x,dy=N[i].y-N[j].y,d=Math.hypot(dx,dy),m=N[i].hub||N[j].hub?185:115;if(d<m){x.beginPath();x.strokeStyle=`rgba(255,77,0,${(1-d/m)*.12})`;x.lineWidth=.5;x.moveTo(N[i].x,N[i].y);x.lineTo(N[j].x,N[j].y);x.stroke()}}
+    N.forEach(n=>{const p=(Math.sin(n.p)*.5+.5)*.6+.4;if(n.hub){x.beginPath();x.arc(n.x,n.y,7+Math.sin(n.p)*2,0,Math.PI*2);x.strokeStyle=`rgba(255,77,0,${.1*p})`;x.lineWidth=1;x.stroke()}x.beginPath();x.arc(n.x,n.y,n.hub?2.6:n.r,0,Math.PI*2);x.fillStyle=n.hub?`rgba(255,77,0,${.8*p})`:`rgba(255,77,0,${.28*p})`;x.fill()});
+    raf=requestAnimationFrame(draw)};
+  resize();init();requestAnimationFrame(draw);
+  window.addEventListener('resize',()=>{cancelAnimationFrame(raf);resize();init();requestAnimationFrame(draw)})
+}();
+
+/* ── HUD LIVE VALUES ── */
+setInterval(()=>{
+  const s=document.getElementById('hud-speed'),la=document.getElementById('hud-lat'),lo=document.getElementById('hud-lon');
+  if(s)s.textContent=Math.floor(Math.random()*30+68);
+  if(la)la.textContent=(6.4531+Math.random()*.002-.001).toFixed(4);
+  if(lo)lo.textContent=(3.3958+Math.random()*.002-.001).toFixed(4);
+},2800);
+
+/* ── MAP CANVAS ── */
+!function(){
+  const c=document.getElementById('map-canvas'),x=c.getContext('2d');
+  let W,H,t=0,raf2;
+  const veh=[{x:.38,y:.32,vx:.0007,vy:.0003,c:'#FF4D00'},{x:.6,y:.55,vx:-.0006,vy:.0005,c:'#FF4D00'},{x:.2,y:.7,vx:.001,vy:-.0004,c:'#FF4D00'},{x:.75,y:.3,vx:-.0005,vy:.0007,c:'#febc2e'},{x:.5,y:.8,vx:.0007,vy:-.0006,c:'#FF4D00'}];
+  const resize2=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight};
+  const draw2=()=>{
+    x.clearRect(0,0,W,H);
+    for(let i=0;i<W;i+=55){x.beginPath();x.strokeStyle='rgba(255,255,255,.032)';x.lineWidth=1;x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
+    for(let j=0;j<H;j+=45){x.beginPath();x.strokeStyle='rgba(255,255,255,.032)';x.lineWidth=1;x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+    [[0,.15,1,.85],[.08,0,.92,1],[0,.6,1,.4]].forEach(d=>{x.beginPath();x.strokeStyle='rgba(255,77,0,.04)';x.lineWidth=1.5;x.moveTo(d[0]*W,d[1]*H);x.lineTo(d[2]*W,d[3]*H);x.stroke()});
+    veh.forEach(v=>{v.x+=v.vx;v.y+=v.vy;if(v.x<.02||v.x>.98)v.vx*=-1;if(v.y<.02||v.y>.98)v.vy*=-1;
+      const px=v.x*W,py=v.y*H,pls=Math.sin(t*.04)*.5+.5;
+      x.beginPath();x.arc(px,py,10+6*pls,0,Math.PI*2);x.fillStyle=`rgba(255,77,0,${.06*pls})`;x.fill();
+      x.beginPath();x.arc(px,py,3.5,0,Math.PI*2);x.fillStyle=v.c;x.fill()});
+    const sl=(t%220)/220*H;x.beginPath();x.strokeStyle='rgba(255,77,0,.05)';x.lineWidth=1.5;x.moveTo(0,sl);x.lineTo(W,sl);x.stroke();
+    t++;raf2=requestAnimationFrame(draw2)};
+  resize2();draw2();window.addEventListener('resize',()=>{cancelAnimationFrame(raf2);resize2();draw2()});
+  setInterval(()=>{const el=document.getElementById('map-time');if(el)el.textContent=Math.floor(Math.random()*8+1)+'s ago'},3000)
+}();
+
+/* ── DASH MINI CANVAS ── */
+!function(){
+  const c=document.getElementById('dash-mini-canvas'),x=c.getContext('2d');
+  const pts=[{x:.18,y:.4},{x:.42,y:.22},{x:.65,y:.55},{x:.35,y:.75},{x:.82,y:.28}];
+  let t3=0;
+  const resize3=()=>{const r=c.parentElement.getBoundingClientRect();c.width=r.width;c.height=r.height};
+  const draw3=()=>{
+    const W=c.width,H=c.height;x.clearRect(0,0,W,H);
+    for(let i=0;i<W;i+=26){x.beginPath();x.strokeStyle='rgba(255,255,255,.04)';x.lineWidth=.5;x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
+    for(let j=0;j<H;j+=18){x.beginPath();x.strokeStyle='rgba(255,255,255,.04)';x.lineWidth=.5;x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+    x.beginPath();x.strokeStyle='rgba(255,77,0,.3)';x.lineWidth=1.5;x.setLineDash([4,4]);
+    pts.forEach((p,i)=>i===0?x.moveTo(p.x*W,p.y*H):x.lineTo(p.x*W,p.y*H));x.stroke();x.setLineDash([]);
+    pts.forEach((p,i)=>{const px=p.x*W,py=p.y*H,pls=(Math.sin(t3*.07+i)*.5+.5);
+      x.beginPath();x.arc(px,py,9*pls,0,Math.PI*2);x.fillStyle=`rgba(255,77,0,${.08*pls})`;x.fill();
+      x.beginPath();x.arc(px,py,3,0,Math.PI*2);x.fillStyle=i===1?'#febc2e':'#FF4D00';x.fill()});
+    t3++;requestAnimationFrame(draw3)};
+  resize3();draw3();window.addEventListener('resize',resize3);
+  setInterval(()=>{const el=document.getElementById('kpi-km');if(el)el.textContent=Math.floor(Math.random()*60+310)},3500)
+}();
+
+/* ── COVERAGE MAP CANVAS ── */
+!function(){
+  const c=document.getElementById('cov-canvas');
+  if(!c)return;
+  const x=c.getContext('2d');
+  const W=c.width=c.offsetWidth,H=480;c.height=H;
+
+  // Nigeria simplified outline points (normalized 0-1)
+  const outline=[[.38,.08],[.45,.06],[.55,.07],[.65,.1],[.72,.14],[.78,.2],[.82,.28],[.84,.35],[.82,.42],[.78,.48],[.82,.54],[.82,.62],[.78,.68],[.72,.74],[.65,.8],[.55,.84],[.45,.85],[.35,.82],[.28,.76],[.22,.7],[.18,.62],[.16,.54],[.18,.46],[.2,.38],[.22,.3],[.25,.22],[.3,.15],[.35,.1],[.38,.08]];
+
+  // City dots [x, y, size, opacity]
+  const cities=[
+    {x:.35,y:.68,r:8,a:1,label:'Lagos',hq:true},
+    {x:.52,y:.45,r:7,a:1,label:'Abuja',hq:true},
+    {x:.55,y:.72,r:6,a:.8,label:'P.H.'},
+    {x:.48,y:.22,r:5,a:.7,label:'Kano'},
+    {x:.32,y:.58,r:4,a:.6,label:'Ibadan'},
+    {x:.6,y:.55,r:4,a:.6,label:'Enugu'},
+    {x:.42,y:.6,r:4,a:.6,label:'Benin'},
+    {x:.3,y:.42,r:3,a:.4,label:'Oshogbo'},
+    {x:.55,y:.32,r:3,a:.4,label:'Kaduna'},
+    {x:.62,y:.42,r:3,a:.4,label:'Makurdi'},
+  ];
+
+  let t4=0;
+  const draw4=()=>{
+    x.clearRect(0,0,W,H);
+    // Background grid
+    for(let i=0;i<W;i+=32){x.beginPath();x.strokeStyle='rgba(255,255,255,.025)';x.lineWidth=.5;x.moveTo(i,0);x.lineTo(i,H);x.stroke()}
+    for(let j=0;j<H;j+=28){x.beginPath();x.strokeStyle='rgba(255,255,255,.025)';x.lineWidth=.5;x.moveTo(0,j);x.lineTo(W,j);x.stroke()}
+
+    // Nigeria outline
+    x.beginPath();
+    outline.forEach((p,i)=>{const px=p[0]*W,py=p[1]*H;i===0?x.moveTo(px,py):x.lineTo(px,py)});
+    x.closePath();
+    x.fillStyle='rgba(255,77,0,.04)';x.fill();
+    x.strokeStyle='rgba(255,77,0,.25)';x.lineWidth=1.5;x.stroke();
+
+    // Coverage circles
+    cities.forEach(city=>{
+      const px=city.x*W,py=city.y*H;
+      const pls=(Math.sin(t4*.03+city.x*5)*.5+.5)*.4+.6;
+      x.beginPath();x.arc(px,py,city.r*8*pls,0,Math.PI*2);
+      x.fillStyle=`rgba(255,77,0,${.04*city.a*pls})`;x.fill();
+      x.beginPath();x.arc(px,py,city.r*4,0,Math.PI*2);
+      x.fillStyle=`rgba(255,77,0,${.1*city.a})`;x.fill();
+    });
+
+    // Connection lines between major cities
+    [[0,1],[0,2],[1,2],[1,3],[1,4],[0,4]].forEach(([a,b])=>{
+      x.beginPath();x.strokeStyle='rgba(255,77,0,.1)';x.lineWidth=.8;x.setLineDash([3,6]);
+      x.moveTo(cities[a].x*W,cities[a].y*H);x.lineTo(cities[b].x*W,cities[b].y*H);x.stroke();x.setLineDash([])
+    });
+
+    // City dots & labels
+    cities.forEach(city=>{
+      const px=city.x*W,py=city.y*H,pls=(Math.sin(t4*.04+city.y*4)*.5+.5);
+      if(city.hq){x.beginPath();x.arc(px,py,city.r+3+2*pls,0,Math.PI*2);x.strokeStyle=`rgba(255,77,0,${.3*pls})`;x.lineWidth=1;x.stroke()}
+      x.beginPath();x.arc(px,py,city.r,0,Math.PI*2);
+      x.fillStyle=city.hq?`rgba(255,77,0,${.8+.2*city.a})`:`rgba(255,77,0,${.5*city.a})`;x.fill();
+      if(city.label){x.font='bold 9px "Space Mono",monospace';x.fillStyle='rgba(255,255,255,.6)';x.textAlign='center';x.fillText(city.label,px,py-city.r-4)}
+    });
+    t4++;requestAnimationFrame(draw4)
+  };
+  draw4()
+}();
+
+/* ── NAV ── */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60),{passive:true});
+
+/* ── SCROLL REVEAL ── */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+
+/* ── COUNT UP ── */
+function countUp(el,target,sfx,dur=1600){
+  const s=performance.now();
+  (function step(ts){const p=Math.min((ts-s)/dur,1),v=Math.round(p*target);el.textContent=v+sfx;if(p<1)requestAnimationFrame(step)})(performance.now())
+}
+const cio=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){const t=+e.target.dataset.count,sfx=e.target.textContent.includes('%')?'%':'+';countUp(e.target,t,sfx);cio.unobserve(e.target)}
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+setTimeout(()=>{
+  const a=document.getElementById('cnt-500'),b=document.getElementById('cnt-99');
+  if(a)countUp(a,500,'+');if(b)countUp(b,99,'%')
+},900);
+
+/* ── WA FORM ── */
+const WA='2349022572158';
+document.getElementById('quoteForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const g=id=>document.getElementById(id).value.trim();
+  const fn=g('f-fn'),ln=g('f-ln'),em=g('f-em'),wa=g('f-wa'),ad=g('f-ad'),vt=g('f-vt'),yr=g('f-yr'),mk=g('f-mk'),mo=g('f-mo'),pk=g('f-pk'),no=g('f-no');
+  if([fn,ln,em,wa,ad,vt,yr,pk].some(v=>!v)){
+    this.querySelectorAll('input[required],select[required]').forEach(f=>{
+      if(!f.value.trim()){f.style.borderColor='rgba(255,77,0,.8)';f.addEventListener('input',()=>f.style.borderColor='',{once:true})}});return}
+  const msg=['\u{1F697} *VNS Quote Request*','','*Personal Details*',
+    `\u2022 Name: ${fn} ${ln}`,`\u2022 Email: ${em}`,`\u2022 WhatsApp: ${wa}`,`\u2022 Address: ${ad}`,'',
+    '*Vehicle Details*',`\u2022 Type: ${vt}`,`\u2022 Year: ${yr}`,
+    mk?`\u2022 Make: ${mk}`:null,mo?`\u2022 Model: ${mo}`:null,'',
+    '*Package*',`\u2022 ${pk}`,no?`\n*Notes*\n${no}`:null,'',
+    '_Sent via VNS website_'
+  ].filter(l=>l!==null).join('\n');
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer');
+  this.style.display='none';document.getElementById('sState').classList.add('show')
+});
+</script>
+</body>
+</html>
