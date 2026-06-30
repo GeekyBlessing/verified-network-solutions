@@ -48,7 +48,7 @@ body{background:var(--ink);color:var(--w);font-family:var(--sans);overflow-x:hid
 
 /* Real photo overlay - using unsplash API pattern with a dark car/city image */
 .hero-photo{position:absolute;inset:0;z-index:1}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:.28;filter:saturate(0.4) contrast(1.1)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 55%;opacity:.65;filter:saturate(.6) contrast(1.2) brightness(.95)}
 .hero-photo::after{content:'';position:absolute;inset:0;background:
   linear-gradient(to right, rgba(5,5,5,.7) 0%, rgba(5,5,5,.2) 60%, rgba(5,5,5,.5) 100%),
   linear-gradient(to bottom, rgba(5,5,5,.3) 0%, rgba(5,5,5,.0) 40%, rgba(5,5,5,.95) 100%)}
@@ -121,7 +121,7 @@ body{background:var(--ink);color:var(--w);font-family:var(--sans);overflow-x:hid
 #photos{background:var(--ink);padding:0;overflow:hidden;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
 .photo-strip{display:flex;gap:0;height:320px}
 .photo-cell{flex:1;position:relative;overflow:hidden;cursor:pointer}
-.photo-cell img{width:100%;height:100%;object-fit:cover;filter:saturate(.35) brightness(.7);transition:filter .5s var(--ease),transform .5s var(--ease)}
+.photo-cell img{width:100%;height:100%;object-fit:cover;filter:saturate(.5) brightness(.8);transition:filter .5s var(--ease),transform .5s var(--ease)}
 .photo-cell:hover img{filter:saturate(.7) brightness(.85);transform:scale(1.04)}
 .photo-cell-label{position:absolute;bottom:0;left:0;right:0;padding:.9rem 1.1rem;background:linear-gradient(to top,rgba(5,5,5,.9),transparent);font-size:.66rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .3s;transform:translateY(4px);transition:opacity .3s,transform .3s}
 .photo-cell:hover .photo-cell-label{opacity:1;transform:none}
@@ -173,6 +173,21 @@ body{background:var(--ink);color:var(--w);font-family:var(--sans);overflow-x:hid
 .pc-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
 .pc-cta:hover,.pc.feat .pc-cta{background:var(--o);color:#fff}
 .pc.feat .pc-cta:hover{background:var(--o2)}
+
+/* ─── PERSONAL SECURITY TEASER ─── */
+/* ─── PERSONAL SECURITY DIVIDER & PRODUCT PHOTOS ─── */
+.ps-divider{text-align:center;padding:3.5rem 0 0;border-top:1px solid var(--bd);margin-top:3.5rem}
+.ps-divider-eye{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--o);margin-bottom:.8rem}
+.ps-divider-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;margin-bottom:.8rem}
+.ps-divider-title em{font-style:normal;color:var(--o)}
+.ps-divider-desc{font-size:.85rem;color:var(--mu);line-height:1.7;max-width:480px;margin:0 auto}
+.pc-photo{position:relative;height:200px;overflow:hidden;background:#0a0a0a}
+.pc-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(.5) brightness(.75);transition:filter .4s,transform .5s var(--ease)}
+.pc:hover .pc-photo img{filter:saturate(.7) brightness(.9);transform:scale(1.05)}
+.pc-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--s2) 0%,transparent 50%)}
+.pc-photo-badge{position:absolute;top:1rem;left:1rem;background:rgba(5,5,5,.8);border:1px solid rgba(255,77,0,.3);color:var(--o);font-family:var(--mono);font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;padding:.35rem .8rem;z-index:2}
+.price-tba{font-family:var(--mono);font-size:.7rem;color:var(--mu);letter-spacing:.05em;font-style:italic}
+@media(max-width:768px){.ps-divider{padding-top:2.5rem;margin-top:2.5rem}}
 
 /* ─── STORY / ABOUT ─── */
 #story{background:var(--ink);overflow:hidden}
@@ -418,7 +433,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
 <body>
 
 <!-- WA FLOAT -->
-<a id="wa-btn" href="https://wa.me/2349022572158" target="_blank" rel="noopener" aria-label="WhatsApp">
+<a id="wa-btn" href="https://api.whatsapp.com/send?phone=2349023572158" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
@@ -455,7 +470,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
 
   <!-- Real photography from Unsplash (night city + car) -->
   <div class="hero-photo">
-    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80&auto=format&fit=crop" alt="Vehicle tracking at night" loading="eager" crossorigin="anonymous">
+    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=80&auto=format&fit=crop" alt="Cinematic car in motion" loading="eager" crossorigin="anonymous">
   </div>
 
   <!-- Animated HUD overlays -->
@@ -554,7 +569,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="photo-cell-label">24/7 Monitoring</div>
     </div>
     <div class="photo-cell">
-      <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=75&auto=format&fit=crop&crop=center" alt="Fleet vehicles" loading="lazy" crossorigin="anonymous">
+      <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&q=75&auto=format&fit=crop&crop=center" alt="Fleet vehicles" loading="lazy" crossorigin="anonymous">
       <div class="photo-cell-num">05</div>
       <div class="photo-cell-label">Fleet Management</div>
     </div>
@@ -596,7 +611,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="pc-head"><div class="pc-badge">Most Popular</div><div class="pc-cat">Dash Cam</div><div class="pc-name">Full HD Dash Cam</div><p class="pc-desc">F/NO 2.2, 140&deg; FOV, Full HD 1080P at 30FPS. Crystal-clear footage day and night.</p></div>
       <div class="pc-body">
         <ul class="pc-feats"><li>Full HD 1080P @ 30FPS</li><li>140&deg; wide-angle FOV</li><li>F/NO 2.2 low-light aperture</li><li>Loop recording</li><li>G-sensor incident lock</li><li>Certified professional install</li></ul>
-        <table class="ptbl"><tr><td>2000&ndash;2012 Model</td><td>&#8358;85,000</td></tr><tr><td>2013&ndash;2020 Model</td><td>&#8358;110,000</td></tr></table>
+        <table class="ptbl"><tr><td>All Vehicle Models</td><td>&#8358;195,000</td></tr></table>
         <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
@@ -609,6 +624,67 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       </div>
     </div>
   </div>
+
+  <div class="ps-divider sr sr-d4">
+    <div class="ps-divider-eye">New &middot; Beyond the Vehicle</div>
+    <div class="ps-divider-title">Personal &amp; <em>Covert Security</em></div>
+    <p class="ps-divider-desc">Discreet surveillance tools for your home, office, and belongings &mdash; built to look completely ordinary.</p>
+  </div>
+
+  <div class="prd-grid sr sr-d4" style="margin-top:1.5rem">
+
+    <div class="pc">
+      <div class="pc-photo">
+        <div class="pc-photo-badge">Covert Camera</div>
+        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&q=75&auto=format&fit=crop" alt="Spy pen camera" loading="lazy" crossorigin="anonymous">
+      </div>
+      <div class="pc-head">
+        <div class="pc-cat">Spy Pen</div>
+        <div class="pc-name">Covert Pen Camera</div>
+        <p class="pc-desc">A fully functional pen with a hidden HD camera. Records discreetly in meetings, interviews, or anywhere you need quiet evidence.</p>
+      </div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>HD video &amp; audio recording</li><li>Fully functional ink pen</li><li>Rechargeable battery</li><li>One-touch discreet activation</li><li>MicroSD storage support</li></ul>
+        <table class="ptbl"><tr><td>Spy Pen Camera</td><td class="price-tba">Price on request</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="pc-photo">
+        <div class="pc-photo-badge">Item Tracker</div>
+        <img src="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?w=600&q=75&auto=format&fit=crop" alt="AirTag style tracker" loading="lazy" crossorigin="anonymous">
+      </div>
+      <div class="pc-head">
+        <div class="pc-cat">Smart Tracker</div>
+        <div class="pc-name">AirTag-Style Tracker</div>
+        <p class="pc-desc">A coin-sized Bluetooth tracker for bags, luggage, keys, and valuables. Pair it with your phone and never lose track of what matters.</p>
+      </div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>Real-time Bluetooth location</li><li>Compact, coin-sized design</li><li>Long-life replaceable battery</li><li>Lost-mode alerts</li><li>Attach to bags, keys, luggage</li></ul>
+        <table class="ptbl"><tr><td>Smart Item Tracker</td><td class="price-tba">Price on request</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+    <div class="pc">
+      <div class="pc-photo">
+        <div class="pc-photo-badge">Hidden Camera</div>
+        <img src="https://images.unsplash.com/photo-1495364141860-b0d03eccd065?w=600&q=75&auto=format&fit=crop" alt="Spy alarm clock camera" loading="lazy" crossorigin="anonymous">
+      </div>
+      <div class="pc-head">
+        <div class="pc-cat">Home &amp; Office</div>
+        <div class="pc-name">Spy Alarm Clock Camera</div>
+        <p class="pc-desc">A fully working desk alarm clock with a built-in hidden camera. Monitor your home, office, or nursery without anyone knowing.</p>
+      </div>
+      <div class="pc-body">
+        <ul class="pc-feats"><li>Full HD hidden camera</li><li>Fully functional alarm clock</li><li>Motion-activated recording</li><li>Night vision capability</li><li>Remote viewing via app</li></ul>
+        <table class="ptbl"><tr><td>Spy Alarm Clock</td><td class="price-tba">Price on request</td></tr></table>
+        <a href="#quote" class="pc-cta">Request Quote <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ═══════ COMPANY STORY ═══════ -->
@@ -617,7 +693,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
     <div class="story-visual sr">
       <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900&q=80&auto=format&fit=crop&crop=center" alt="VNS team at work" loading="lazy" crossorigin="anonymous">
       <div class="story-visual-badge">
-        <div class="story-visual-badge-year">2022</div>
+        <div class="story-visual-badge-year">2018</div>
         <div class="story-visual-badge-text">Founded in Lagos</div>
       </div>
     </div>
@@ -625,12 +701,12 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="s-eye">Our Story</div>
       <h2 class="s-title">Built by<br><em>Nigerians,</em><br>for Nigerians.</h2>
       <blockquote class="story-quote">&ldquo;We started VNS because we were tired of watching friends lose their vehicles with no way to find them. We knew technology could change that.&rdquo;</blockquote>
-      <p class="story-body">Verified Network Solutions was founded in Lagos in 2022 with a single goal: give every Nigerian vehicle owner the same level of protection that multinational fleets enjoy. We started with two technicians, a van, and a belief that affordable, professional-grade tracking would transform how people protect what matters most.<br><br>Today we operate across 18 Nigerian cities, with a team of certified installation engineers and a customer success rate that speaks for itself. Every tracker we install. Every dash cam we fit. Every fleet we manage. All backed by the same promise: as sure as the sunrise.</p>
+      <p class="story-body">Verified Network Solutions was founded in Lagos in 2018 with a single goal: give every Nigerian vehicle owner the same level of protection that multinational fleets enjoy. We started with two technicians, a van, and a belief that affordable, professional-grade tracking would transform how people protect what matters most.<br><br>Today, after more than 7 years in the field, we operate across 18 Nigerian cities, with a team of certified installation engineers and a customer success rate that speaks for itself. Every tracker we install. Every dash cam we fit. Every fleet we manage. All backed by the same promise: as sure as the sunrise.</p>
       <div class="story-milestones">
-        <div class="milestone"><div class="milestone-year">2022</div><div class="milestone-text"><strong>Founded in Lagos</strong>First 50 vehicles tracked. Zero recoveries failed.</div></div>
-        <div class="milestone"><div class="milestone-year">2023</div><div class="milestone-text"><strong>National Expansion</strong>Opened in Abuja, Port Harcourt, Kano, and 8 more cities.</div></div>
-        <div class="milestone"><div class="milestone-year">2024</div><div class="milestone-text"><strong>Fleet Division Launched</strong>Corporate fleet contracts with logistics companies across Nigeria.</div></div>
-        <div class="milestone"><div class="milestone-year">2025</div><div class="milestone-text"><strong>500+ Active Trackers</strong>99% recovery rate. Trusted by hundreds of individuals and businesses.</div></div>
+        <div class="milestone"><div class="milestone-year">2018</div><div class="milestone-text"><strong>Founded in Lagos</strong>First 50 vehicles tracked. Zero recoveries failed.</div></div>
+        <div class="milestone"><div class="milestone-year">2020</div><div class="milestone-text"><strong>National Expansion</strong>Opened in Abuja, Port Harcourt, Kano, and 8 more cities.</div></div>
+        <div class="milestone"><div class="milestone-year">2022</div><div class="milestone-text"><strong>Fleet Division Launched</strong>Corporate fleet contracts with logistics companies across Nigeria.</div></div>
+        <div class="milestone"><div class="milestone-year">2026</div><div class="milestone-text"><strong>2,500+ Active Trackers</strong>99% recovery rate. Trusted by hundreds of individuals and businesses.</div></div>
       </div>
     </div>
   </div>
@@ -749,14 +825,14 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="trust-badges sr sr-d3">
         <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tbadge-title">Certified Installation</div><div class="tbadge-desc">Factory-grade wiring by trained engineers. Clean, covert, and built to last.</div></div>
         <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="tbadge-title">24/7 Support</div><div class="tbadge-desc">Always reachable. WhatsApp response in minutes, not hours.</div></div>
-        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="tbadge-title">99% Recovery Rate</div><div class="tbadge-desc">Verified across hundreds of theft incidents handled since 2022.</div></div>
+        <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="tbadge-title">99% Recovery Rate</div><div class="tbadge-desc">Verified across hundreds of theft incidents handled since 2018.</div></div>
         <div class="tbadge"><div class="tbadge-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="tbadge-title">Cloud Platform</div><div class="tbadge-desc">Secure, always-on dashboard. Access your fleet from any device, anywhere.</div></div>
       </div>
     </div>
     <div class="trust-nums sr sr-d2">
-      <div class="tnum"><div class="tnum-val" data-count="500">0</div><div class="tnum-lbl">Vehicles Tracked</div></div>
+      <div class="tnum"><div class="tnum-val" data-count="2500">0</div><div class="tnum-lbl">Vehicles Tracked</div></div>
       <div class="tnum"><div class="tnum-val" data-count="99">0</div><div class="tnum-lbl">% Recovery Rate</div></div>
-      <div class="tnum"><div class="tnum-val" data-count="3">0</div><div class="tnum-lbl">Years of Service</div></div>
+      <div class="tnum"><div class="tnum-val" data-count="7">0</div><div class="tnum-lbl">Years of Service</div></div>
       <div class="tnum"><div class="tnum-val" data-count="18">0</div><div class="tnum-lbl">Cities Covered</div></div>
     </div>
   </div>
@@ -817,13 +893,13 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="sr sr-d1"><h2 class="s-title">We Cover<br><em>Nigeria.</em></h2></div>
       <div class="sr sr-d2"><p class="s-body">From Lagos to Kano, Port Harcourt to Abuja &mdash; VNS operates in 18 cities with certified installation teams on the ground.</p></div>
       <div class="cov-cities-grid sr sr-d3">
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Lagos</div><div class="cov-city-count">HQ &middot; 200+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Abuja</div><div class="cov-city-count">Branch &middot; 80+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Port Harcourt</div><div class="cov-city-count">Branch &middot; 60+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Kano</div><div class="cov-city-count">Partner &middot; 40+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Ibadan</div><div class="cov-city-count">Partner &middot; 30+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Enugu</div><div class="cov-city-count">Partner &middot; 25+ vehicles</div></div></div>
-        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Benin City</div><div class="cov-city-count">Partner &middot; 20+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Lagos</div><div class="cov-city-count">HQ &middot; 850+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Abuja</div><div class="cov-city-count">Branch &middot; 410+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Port Harcourt</div><div class="cov-city-count">Branch &middot; 320+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Kano</div><div class="cov-city-count">Partner &middot; 210+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Ibadan</div><div class="cov-city-count">Partner &middot; 160+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Enugu</div><div class="cov-city-count">Partner &middot; 130+ vehicles</div></div></div>
+        <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">Benin City</div><div class="cov-city-count">Partner &middot; 95+ vehicles</div></div></div>
         <div class="cov-city"><div class="cov-city-dot"></div><div><div class="cov-city-name">+11 more cities</div><div class="cov-city-count">Nationwide coverage</div></div></div>
       </div>
       <div class="cov-stat-row sr sr-d4">
@@ -868,7 +944,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
       <div class="sr sr-d1"><h2 class="s-title">Let&#39;s Secure<br><em>Your Vehicle</em></h2></div>
       <div class="sr sr-d2"><p class="s-body">Fill in your details and we&#39;ll send a personalised quote via WhatsApp within 2 hours. No commitment required.</p></div>
       <div class="q-contact sr sr-d3">
-        <div class="q-crow"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.28-1.28a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>WhatsApp: <strong>+234 902 257 2158</strong></span></div>
+        <div class="q-crow"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.08 6.08l1.28-1.28a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg><span>WhatsApp: <strong>+234 902 357 2158</strong></span></div>
         <div class="q-crow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>Web: <strong>VerifiedNetworkSolution.com</strong></span></div>
         <div class="q-crow"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span>Instagram: <strong>@Verifiednetworksolution</strong></span></div>
         <div class="q-crow"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Hours: <strong>Mon&ndash;Sat, 8AM&ndash;6PM</strong></span></div>
@@ -886,7 +962,7 @@ footer{background:#030303;border-top:1px solid var(--bd);padding:3rem 3.5rem;dis
           <div class="frow"><div class="fg"><label>Vehicle Type *</label><select id="f-vt" required><option value="" disabled selected>Select type</option><option>Car / SUV</option><option>Bus / Minivan</option><option>Truck / Lorry</option><option>Motorcycle / Bike</option><option>Other</option></select></div><div class="fg"><label>Year Range *</label><select id="f-yr" required><option value="" disabled selected>Select range</option><option>2000&ndash;2012</option><option>2013&ndash;2020</option><option>2021 &amp; above</option></select></div></div>
           <div class="frow"><div class="fg"><label>Make / Brand</label><input type="text" id="f-mk" placeholder="Toyota, Honda&hellip;"></div><div class="fg"><label>Model</label><input type="text" id="f-mo" placeholder="Camry, Corolla&hellip;"></div></div>
           <div class="fs-head">Package Selection</div>
-          <div class="fg"><label>Package *</label><select id="f-pk" required><option value="" disabled selected>Select a package</option><option>GPS Tracker &mdash; &#8358;85,000 (2000&ndash;2012)</option><option>GPS Tracker &mdash; &#8358;110,000 (2013&ndash;2020)</option><option>Full HD Dash Cam &mdash; &#8358;85,000 (2000&ndash;2012)</option><option>Full HD Dash Cam &mdash; &#8358;110,000 (2013&ndash;2020)</option><option>Bike Tracker &mdash; &#8358;50,000 (all models)</option><option>GPS Tracker + Dash Cam Bundle</option><option>Fleet Management (multiple vehicles)</option><option>Not sure &mdash; help me choose</option></select></div>
+          <div class="fg"><label>Package *</label><select id="f-pk" required><option value="" disabled selected>Select a package</option><option>GPS Tracker &mdash; &#8358;85,000 (2000&ndash;2012)</option><option>GPS Tracker &mdash; &#8358;110,000 (2013&ndash;2020)</option><option>Full HD Dash Cam &mdash; &#8358;195,000 (all models)</option><option>Bike Tracker &mdash; &#8358;50,000 (all models)</option><option>GPS Tracker + Dash Cam Bundle</option><option>Fleet Management (multiple vehicles)</option><option>Spy Pen Camera</option><option>AirTag-Style Smart Tracker</option><option>Spy Alarm Clock Camera</option><option>Not sure &mdash; help me choose</option></select></div>
           <div class="fg"><label>Additional Notes</label><textarea id="f-no" placeholder="Any questions, requirements, or vehicle details&hellip;"></textarea></div>
           <button type="submit" class="form-submit"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Send via WhatsApp</button>
           <p class="form-note">Opens WhatsApp with your details pre-filled &mdash; just tap Send.</p>
@@ -1054,11 +1130,11 @@ const cio=new IntersectionObserver(es=>es.forEach(e=>{
 document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 setTimeout(()=>{
   const a=document.getElementById('cnt-500'),b=document.getElementById('cnt-99');
-  if(a)countUp(a,500,'+');if(b)countUp(b,99,'%')
+  if(a)countUp(a,2500,'+');if(b)countUp(b,99,'%')
 },900);
 
 /* ── WA FORM ── */
-const WA='2349022572158';
+const WA='2349023572158';
 document.getElementById('quoteForm').addEventListener('submit',function(e){
   e.preventDefault();
   const g=id=>document.getElementById(id).value.trim();
@@ -1073,7 +1149,7 @@ document.getElementById('quoteForm').addEventListener('submit',function(e){
     '*Package*',`\u2022 ${pk}`,no?`\n*Notes*\n${no}`:null,'',
     '_Sent via VNS website_'
   ].filter(l=>l!==null).join('\n');
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer');
+  window.open(`https://api.whatsapp.com/send?phone=${WA}&text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer');
   this.style.display='none';document.getElementById('sState').classList.add('show')
 });
 </script>
